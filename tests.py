@@ -37,7 +37,7 @@ class TestDjangoCacheUrl(TestCase):
         assert_equals(config['LOCATION'], 'herp')
 
     def test_memcached_url_returns_pylibmc_cache(self):
-        environ['CACHE_URL'] = 'memcache://127.0.0.1:11211'
+        environ['CACHE_URL'] = 'memcached://127.0.0.1:11211'
         config = django_cache_url.config()
         assert_equals(config['ENGINE'], MEMCACHED)
         assert_equals(config['LOCATION'], '127.0.0.1:11211')
