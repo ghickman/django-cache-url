@@ -38,15 +38,8 @@ def parse(url):
     url = urlparse.urlparse(url)
 
     # Update with environment configuration.
-    config['ENGINE'] = CACHE_TYPES[url.scheme]
+    config['BACKEND'] = CACHE_TYPES[url.scheme]
     config['LOCATION'] = url.netloc or url.path[1:]
 
     return config
 
-{
-'locmem': 'locmem://[name]',
-'db': 'db://table',
-'file': 'file:///path/to/file',
-'dummy': 'dummy://',  # default
-'memcached': 'memcache://127.0.0.1:11211/'
-}
