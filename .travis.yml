@@ -5,4 +5,3 @@ python:
 script: make test
 install:
   - pip install -q . --use-mirrors
-  - pip install -q -r requirements.txt --use-mirrors
