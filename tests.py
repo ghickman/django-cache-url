@@ -1,7 +1,7 @@
 from os import environ
 from unittest import TestCase
 
-from nose.tools import assert_true
+from nose.tools import assert_equals
 
 import django_cache_url
 
@@ -15,17 +15,17 @@ MEMCACHED = 'django.core.cache.backends.memcached.PyLibMCCache'
 class TestDjangoCacheUrl(TestCase):
     def test_config_defaults_to_locmem(self):
         config = django_cache_url.config()
-        assert_true(config['ENGINE'], LOCMEM)
+        assert_equals(config['ENGINE'], LOCMEM)
 
     def test_db_url_returns_database_cache(self):
         environ['CACHE_URL'] = 'db:///super_caching_table'
         config = django_cache_url.config()
-        assert_true(config['ENGINE'], DB)
-        assert_true(config['LOCATION'], 'super_caching_table')
+        assert_equals(config['ENGINE'], DB)
+        assert_equals(config['LOCATION'], 'super_caching_table')
 
     def test_file_url_returns_file_cache(self):
         environ['CACHE_URL'] = 'file:///herp'
         config = django_cache_url.config()
-        assert_true(config['ENGINE'], FILE)
-        assert_true(config['LOCATION'], 'herp')
+        assert_equals(config['ENGINE'], FILE)
+        assert_equals(config['LOCATION'], 'herp')
 
