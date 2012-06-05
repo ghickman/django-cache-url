@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 django-cache-url
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
 
 This simple Django utility allows you to utilize the
 `12factor <http://www.12factor.net/backing-services>`_ inspired
