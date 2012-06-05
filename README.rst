@@ -44,4 +44,5 @@ Tests
 -----
 I has them!
 
-[![Build Status](https://secure.travis-ci.org/ghickman/django-cache-url.png?branch=master)](http://travis-ci.org/ghickman/django-cache-url)]
+.. image:: https://secure.travis-ci.org/ghickman/django-cache-url.png?branch=master
+
