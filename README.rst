@@ -1,6 +1,5 @@
 Django-Cache-URL
 ~~~~~~~~~~~~~~
-
 This simple Django utility allows you to utilize the
 `12factor <http://www.12factor.net/backing-services>`_ inspired
 ``CACHE_URL`` environment variable to configure your Django application.
@@ -15,7 +14,6 @@ The internals borrow heavily from kennethreitz's
 
 Usage
 -----
-
 Configure your cache in ``settings.py`` from ``CACHE_URL``::
 
     CACHES = {'default': django_cache_url.config()}
@@ -26,16 +24,18 @@ Parse an arbitrary Cache URL::
 
     CACHES = {'default': django_cache_url.parse('memcache://...')}
 
-Supported caches
--------------------
+Supported Caches
+----------------
+Support currently exists for:
 
-Support currently exists for database, dummy, file, local memory and memcached
-caches.
-
+* locmem (default): ``'locmem://[<name>]'``
+* db: ``'db://<cache_table>'``
+* dummy: ``'dummy://'``
+* file: ``'file://</path/to/file>'``
+* memcached: ``'memcached://127.0.0.1:11211``
 
 Installation
 ------------
-
 Installation is simple too::
 
     $ pip install django-cache-url
