@@ -39,7 +39,7 @@ def parse(url):
 
     # Update with environment configuration.
     config['ENGINE'] = CACHE_TYPES[url.scheme]
-    config['LOCATION'] = url.path[1:],
+    config['LOCATION'] = url.netloc or url.path[1:]
 
     return config
 
