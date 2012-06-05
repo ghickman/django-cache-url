@@ -46,3 +46,11 @@ I has them!
 
 .. image:: https://secure.travis-ci.org/ghickman/django-cache-url.png?branch=master
 
+To run the tests install nose::
+
+    pip install nose
+
+Then run them with::
+
+    make test
+
