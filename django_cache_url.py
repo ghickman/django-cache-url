@@ -39,7 +39,12 @@ def parse(url):
 
     # Update with environment configuration.
     config['BACKEND'] = CACHE_TYPES[url.scheme]
-    config['LOCATION'] = url.netloc or url.path[1:]
+    if url.scheme == 'file':
+        config['LOCATION'] = url.path
+        return config
+
+    config['LOCATION'] = url.netloc
+    config['PREFIX'] = url.path[1:]
 
     return config
 
