@@ -28,11 +28,11 @@ Supported Caches
 ----------------
 Support currently exists for:
 
-* locmem (default): ``'locmem://[<name>]'``
-* db: ``'db://<cache_table>'``
+* locmem (default): ``'locmem://[location][/location]'``
+* db: ``'db://cache_table[/prefix]'``
 * dummy: ``'dummy://'``
-* file: ``'file://</path/to/file>'``
-* memcached: ``'memcached://127.0.0.1:11211``
+* file: ``'file:///path/to/file'``
+* memcached: ``'memcached://127.0.0.1:11211[/prefix]``
 
 Installation
 ------------
