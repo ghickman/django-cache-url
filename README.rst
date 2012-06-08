@@ -42,7 +42,7 @@ Installation is simple too::
 
 Tests
 -----
-I has them!
+I haz them!
 
 .. image:: https://secure.travis-ci.org/ghickman/django-cache-url.png?branch=master
 
