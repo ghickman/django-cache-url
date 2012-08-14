@@ -8,8 +8,9 @@ urlparse.uses_netloc.append('db')
 urlparse.uses_netloc.append('dummy')
 urlparse.uses_netloc.append('file')
 urlparse.uses_netloc.append('locmem')
-urlparse.uses_netloc.append('memcache')
+urlparse.uses_netloc.append('memcached')
 urlparse.uses_netloc.append('django_pylibmc')
+urlparse.uses_netloc.append('pymemcached')
 
 DEFAULT_ENV = 'CACHE_URL'
 
