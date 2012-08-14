@@ -9,6 +9,7 @@ urlparse.uses_netloc.append('dummy')
 urlparse.uses_netloc.append('file')
 urlparse.uses_netloc.append('locmem')
 urlparse.uses_netloc.append('memcache')
+urlparse.uses_netloc.append('django_pylibmc')
 
 DEFAULT_ENV = 'CACHE_URL'
 
@@ -18,6 +19,7 @@ CACHE_TYPES = {
     'file': 'django.core.cache.backends.filebased.FileBasedCache',
     'locmem': 'django.core.cache.backends.locmem.LocMemCache',
     'memcached': 'django.core.cache.backends.memcached.PyLibMCCache',
+    'django_pylibmc': 'django_pylibmc.memcached.PyLibMCCache',
     'pymemcached': 'django.core.cache.backends.memcached.MemcachedCache'
 }
 
