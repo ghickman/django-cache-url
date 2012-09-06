@@ -96,6 +96,6 @@ class TestMemcachedCache(Base):
 
     def test_memcached_url_returns_prefix_from_url(self):
         config = django_cache_url.config()
-        assert_equals(config['PREFIX'], 'prefix')
+        assert_equals(config['KEY_PREFIX'], 'prefix')
 
 

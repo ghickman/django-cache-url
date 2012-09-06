@@ -48,7 +48,7 @@ def parse(url):
         return config
 
     config['LOCATION'] = url.netloc
-    config['PREFIX'] = url.path[1:]
+    config['KEY_PREFIX'] = url.path[1:]
 
     return config
 
