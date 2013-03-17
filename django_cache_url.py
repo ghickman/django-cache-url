@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import os
-import urlparse
+
+try:
+    import urlparse
+except ImportError:
+    from urllib.parse import urlparse
+
 
 # Register cache schemes in URLs.
 urlparse.uses_netloc.append('db')
