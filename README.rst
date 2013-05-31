@@ -33,8 +33,11 @@ Support currently exists for:
 * dummy: ``'dummy://'``
 * file: ``'file:///path/to/file'``
 * memcached: ``'memcached://127.0.0.1:11211[/prefix]``
-* pymemcached: ``'pymemcached://127.0.0.1:11211[/prefix]`` For use with the python-memcached library. Useful if you're using Ubuntu <= 10.04.
-* djangopylibmc: ``'djangopylibmc://127.0.0.1:11211[/prefix]`` For use with SASL based setups such as Heroku.
+* pymemcached: ``'pymemcached://127.0.0.1:11211[/prefix]'`` For use with the python-memcached library. Useful if you're using Ubuntu <= 10.04.
+* djangopylibmc: ``'djangopylibmc://127.0.0.1:11211[/prefix]'`` For use with SASL based setups such as Heroku.
+* redis: ``'redis://t@host:port/db[/prefix]'`` For use with django-redis library.
+* hiredis ``'hiredis://host:port/db[/prefix]'`` For use with django-redis library using
+  HiredisParser
 
 Installation
 ------------
