@@ -99,3 +99,44 @@ class TestMemcachedCache(Base):
         assert_equals(config['KEY_PREFIX'], 'prefix')
 
 
+class TestRedisCache(Base):
+    def setUp(self):
+        super(TestRedisCache, self).setUp()
+        environ['CACHE_URL'] = 'redis://127.0.0.1:6379/0/prefix'
+
+    def test_redis_url_returns_redis_cache(self):
+        location = 'redis_cache.cache.RedisCache'
+        config = django_cache_url.config()
+        assert_equals(config['BACKEND'], location)
+
+    def test_redis_url_returns_location_and_port_from_url(self):
+        config = django_cache_url.config()
+        assert_equals(config['LOCATION'], '127.0.0.1:6379:0')
+
+    def test_redis_url_returns_prefix_from_url(self):
+        config = django_cache_url.config()
+        assert_equals(config['KEY_PREFIX'], 'prefix')
+
+
+class TestHiredisCache(Base):
+    def setUp(self):
+        super(TestHiredisCache, self).setUp()
+        environ['CACHE_URL'] = 'hiredis://127.0.0.1:6379/0/prefix'
+
+    def test_hiredis_url_returns_redis_cache(self):
+        location = 'redis_cache.cache.RedisCache'
+        config = django_cache_url.config()
+        assert_equals(config['BACKEND'], location)
+
+    def test_hiredis_url_returns_location_and_port_from_url(self):
+        config = django_cache_url.config()
+        assert_equals(config['LOCATION'], '127.0.0.1:6379:0')
+
+    def test_hiredis_url_returns_prefix_from_url(self):
+        config = django_cache_url.config()
+        assert_equals(config['KEY_PREFIX'], 'prefix')
+
+    def test_hiredis_url_sets_hiredis_parser(self):
+        config = django_cache_url.config()
+        assert_equals(config['OPTIONS']['PARSER_CLASS'],
+                      'redis.connection.HiredisParser')

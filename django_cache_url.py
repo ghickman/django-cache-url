@@ -16,6 +16,8 @@ urlparse.uses_netloc.append('locmem')
 urlparse.uses_netloc.append('memcached')
 urlparse.uses_netloc.append('djangopylibmc')
 urlparse.uses_netloc.append('pymemcached')
+urlparse.uses_netloc.append('redis')
+urlparse.uses_netloc.append('hiredis')
 
 DEFAULT_ENV = 'CACHE_URL'
 
@@ -26,8 +28,11 @@ CACHE_TYPES = {
     'locmem': 'django.core.cache.backends.locmem.LocMemCache',
     'memcached': 'django.core.cache.backends.memcached.PyLibMCCache',
     'djangopylibmc': 'django_pylibmc.memcached.PyLibMCCache',
-    'pymemcached': 'django.core.cache.backends.memcached.MemcachedCache'
+    'pymemcached': 'django.core.cache.backends.memcached.MemcachedCache',
+    'redis': 'redis_cache.cache.RedisCache',
+    'hiredis': 'redis_cache.cache.RedisCache',
 }
+
 
 def config(env=DEFAULT_ENV, default='locmem://'):
     """Returns configured CACHES dictionary from CACHE_URL"""
@@ -40,20 +45,26 @@ def config(env=DEFAULT_ENV, default='locmem://'):
 
     return config
 
+
 def parse(url):
     """Parses a cache URL."""
     config = {}
 
     url = urlparse.urlparse(url)
-
     # Update with environment configuration.
     config['BACKEND'] = CACHE_TYPES[url.scheme]
     if url.scheme == 'file':
         config['LOCATION'] = url.path
         return config
-
-    config['LOCATION'] = url.netloc
-    config['KEY_PREFIX'] = url.path[1:]
+    elif url.scheme in ('redis', 'hiredis'):
+        path = filter(None, url.path.split('/'))
+        config['LOCATION'] = ':'.join((url.netloc, path[0]))
+        config['KEY_PREFIX'] = '/'.join(path[1:])
+        if url.scheme == 'hiredis':
+            config['OPTIONS'] = {
+                'PARSER_CLASS': 'redis.connection.HiredisParser'}
+    else:
+        config['LOCATION'] = url.netloc
+        config['KEY_PREFIX'] = url.path[1:]
 
     return config
-
