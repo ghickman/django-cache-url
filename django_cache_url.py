@@ -64,9 +64,9 @@ def parse(url):
             config['OPTIONS'] = {
                 'PARSER_CLASS': 'redis.connection.HiredisParser'}
     else:
-        path_list = url.netloc.split(',')
-        if len(path_list) > 1:
-            config['LOCATION'] = path_list
+        netloc_list = url.netloc.split(',')
+        if len(netloc_list) > 1:
+            config['LOCATION'] = netloc_list
         else:
             config['LOCATION'] = url.netloc
         config['KEY_PREFIX'] = url.path[1:]
