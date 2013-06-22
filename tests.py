@@ -98,6 +98,11 @@ class TestMemcachedCache(Base):
         config = django_cache_url.config()
         assert_equals(config['KEY_PREFIX'], 'prefix')
 
+    def test_memcached_url_multiple_locations(self):
+        environ['CACHE_URL'] = 'memcached://127.0.0.1:11211,192.168.0.100:11211/prefix'
+        config = django_cache_url.config()
+        assert_equals(config['LOCATION'], ['127.0.0.1:11211', '192.168.0.100:11211'])
+
 
 class TestRedisCache(Base):
     def setUp(self):
