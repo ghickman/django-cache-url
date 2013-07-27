@@ -57,7 +57,7 @@ def parse(url):
         config['LOCATION'] = url.path
         return config
     elif url.scheme in ('redis', 'hiredis'):
-        path = filter(None, url.path.split('/'))
+        path = list(filter(None, url.path.split('/')))
         config['LOCATION'] = ':'.join((url.netloc, path[0]))
         config['KEY_PREFIX'] = '/'.join(path[1:])
         if url.scheme == 'hiredis':
