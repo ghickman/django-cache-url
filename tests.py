@@ -145,3 +145,68 @@ class TestHiredisCache(Base):
         config = django_cache_url.config()
         assert_equals(config['OPTIONS']['PARSER_CLASS'],
                       'redis.connection.HiredisParser')
+
+
+class TestRedisBothSocketCache(Base):
+    def setUp(self):
+        super(TestRedisBothSocketCache, self).setUp()
+        environ['CACHE_URL'] = 'redis://unix/path/to/socket/file.sock/1/prefix'
+
+    def test_socket_url_returns_redis_cache(self):
+        location = 'redis_cache.cache.RedisCache'
+        config = django_cache_url.config()
+        assert_equals(config['BACKEND'], location)
+
+    def test_socket_url_returns_location_and_port_from_url(self):
+        config = django_cache_url.config()
+        assert_equals(config['LOCATION'], 'unix:/path/to/socket/file.sock:1')
+
+    def test_socket_url_returns_prefix_from_url(self):
+        config = django_cache_url.config()
+        assert_equals(config['KEY_PREFIX'], 'prefix')
+
+
+class TestRedisDatabaseSocketCache(TestRedisBothSocketCache):
+    def setUp(self):
+        super(TestRedisDatabaseSocketCache, self).setUp()
+        environ['CACHE_URL'] = 'redis://unix/path/to/socket/file.sock/1'
+
+    def test_socket_url_returns_prefix_from_url(self):
+        config = django_cache_url.config()
+        assert_equals(config['KEY_PREFIX'], '')
+
+
+class TestRedisPrefixSocketCache(TestRedisBothSocketCache):
+    def setUp(self):
+        super(TestRedisPrefixSocketCache, self).setUp()
+        environ['CACHE_URL'] = 'redis://unix/path/to/socket/file.sock/prefix'
+
+    def test_socket_url_returns_location_and_port_from_url(self):
+        config = django_cache_url.config()
+        assert_equals(config['LOCATION'], 'unix:/path/to/socket/file.sock:0')
+
+    def test_socket_url_returns_prefix_from_url(self):
+        config = django_cache_url.config()
+        assert_equals(config['KEY_PREFIX'], 'prefix')
+
+
+class TestHiredisDatabaseSocketCache(TestRedisDatabaseSocketCache):
+    def setUp(self):
+        super(TestHiredisDatabaseSocketCache, self).setUp()
+        environ['CACHE_URL'] = 'hiredis://unix/path/to/socket/file.sock/1'
+
+    def test_hiredis_url_sets_hiredis_parser(self):
+        config = django_cache_url.config()
+        assert_equals(config['OPTIONS']['PARSER_CLASS'],
+                      'redis.connection.HiredisParser')
+
+
+class TestHiredisPrefixSocketCache(TestRedisPrefixSocketCache):
+    def setUp(self):
+        super(TestHiredisPrefixSocketCache, self).setUp()
+        environ['CACHE_URL'] = 'hiredis://unix/path/to/socket/file.sock/prefix'
+
+    def test_hiredis_url_sets_hiredis_parser(self):
+        config = django_cache_url.config()
+        assert_equals(config['OPTIONS']['PARSER_CLASS'],
+                      'redis.connection.HiredisParser')
