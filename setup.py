@@ -13,7 +13,7 @@ Usage
 
 Configure your cache in ``settings.py``::
 
-    CACHES = {'default': django_cache_url.config()}
+    CACHES={'default': django_cache_url.config()}
 
 Nice and simple.
 """
@@ -21,14 +21,13 @@ from setuptools import setup
 
 
 setup(
-    name = 'django-cache-url',
-    version = '0.6.0',
-    url = 'http://github.com/ghickman/django-cache-url',
-    license = 'MIT',
-    author = 'George Hickman',
-    author_email = 'george@ghickman.co.uk',
-    description = 'Use Cache URLs in your Django application.',
-    long_description = __doc__,
-    py_modules = ('django_cache_url',),
+    name='django-cache-url',
+    version='0.6.0',
+    url='http://github.com/ghickman/django-cache-url',
+    license='MIT',
+    author='George Hickman',
+    author_email='george@ghickman.co.uk',
+    description='Use Cache URLs in your Django application.',
+    long_description=__doc__,
+    py_modules=('django_cache_url',),
 )
-
