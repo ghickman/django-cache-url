@@ -57,9 +57,44 @@ def parse(url):
         config['LOCATION'] = url.path
         return config
     elif url.scheme in ('redis', 'hiredis'):
-        path = list(filter(None, url.path.split('/')))
-        config['LOCATION'] = ':'.join((url.netloc, path[0]))
-        config['KEY_PREFIX'] = '/'.join(path[1:])
+        if url.netloc == 'unix':
+            location_index = None
+            bits = list(filter(None, url.path.split('/')))
+            # find the end of the socket path
+            for index, bit in enumerate(bits, 1):
+                if bit.endswith(('.sock', '.socket')):
+                    location_index = index
+                    break
+
+            if location_index is None:
+                # no socket file extension found, using the whole location
+                location = bits
+            else:
+                # splitting socket path from database and prefix
+                location = bits[:location_index]
+                rest = bits[location_index:]
+                if len(rest) > 0:
+                    try:
+                        # check if first item of the rest is a database
+                        database = int(rest[0])
+                        prefix = rest[1:]
+                    except ValueError:
+                        # or assume the rest is the prefix
+                        database = 0
+                        prefix = rest
+                else:
+                    database = prefix = None
+
+            full_location = (url.netloc, '/' + '/'.join(location))
+            if database is not None:
+                full_location += (str(database),)
+            config['LOCATION'] = ':'.join(full_location)
+            config['KEY_PREFIX'] = '/'.join(prefix)
+
+        else:
+            path = list(filter(None, url.path.split('/')))
+            config['LOCATION'] = ':'.join((url.netloc, path[0]))
+            config['KEY_PREFIX'] = '/'.join(path[1:])
         if url.scheme == 'hiredis':
             config['OPTIONS'] = {
                 'PARSER_CLASS': 'redis.connection.HiredisParser'}
