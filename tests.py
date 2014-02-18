@@ -2,9 +2,13 @@ from os import environ
 from unittest import TestCase
 
 from nose.tools import assert_equals
+try:
+    from nose.tools import assert_in
+except ImportError:
+    # Pre-Python 2.7
+    def assert_in(val, elems): assert val in elems, "%r not found in %r" % (val, elems)
 
 import django_cache_url
-
 
 class Base(TestCase):
     def setUp(self):
@@ -145,6 +149,31 @@ class TestHiredisCache(Base):
         config = django_cache_url.config()
         assert_equals(config['OPTIONS']['PARSER_CLASS'],
                       'redis.connection.HiredisParser')
+
+
+class TestRedisCacheWithPassword(Base):
+    def setUp(self):
+        super(TestRedisCacheWithPassword, self).setUp()
+        environ['CACHE_URL'] = 'redis://:redispass@127.0.0.1:6379/0/prefix'
+
+    def test_redis_url_returns_redis_cache(self):
+        location = 'redis_cache.cache.RedisCache'
+        config = django_cache_url.config()
+        assert_equals(config['BACKEND'], location)
+
+    def test_redis_url_returns_location_and_port_from_url(self):
+        config = django_cache_url.config()
+        assert_equals(config['LOCATION'], '127.0.0.1:6379:0')
+
+    def test_redis_url_returns_prefix_from_url(self):
+        config = django_cache_url.config()
+        assert_equals(config['KEY_PREFIX'], 'prefix')
+
+    def test_redis_url_returns_password(self):
+        config = django_cache_url.config()
+        assert_in('OPTIONS', config)
+        assert_in('PASSWORD', config['OPTIONS'])
+        assert_equals(config['OPTIONS']['PASSWORD'], 'redispass')
 
 
 class TestRedisBothSocketCache(Base):
