@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+v0.7.0
+------
+
+- Add support for UNIX sockets in redis urls (thanks to Jannis Leidel)
+
+
 v0.6.0
 ------
 

@@ -10,6 +10,7 @@ except ImportError:
 
 import django_cache_url
 
+
 class Base(TestCase):
     def setUp(self):
         try:
