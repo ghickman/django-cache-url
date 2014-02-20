@@ -15,3 +15,4 @@ Contributors
 - Brandon Adams <emidln@gmail.com>
 - Allan Mercado <mapes911@gmail.com>
 - Jannis Leidel <jannis@leidel.info>
+- Mjumbe Wawatu Ukweli <mjumbewu@gmail.com>

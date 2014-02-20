@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+v0.8.0
+------
+
+- Add support for password in redis urls (thanks to Mjumbe Wawatu Ukweli)
+
+
 v0.7.0
 ------
 
