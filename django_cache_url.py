@@ -92,12 +92,34 @@ def parse(url):
             config['KEY_PREFIX'] = '/'.join(prefix)
 
         else:
+            try:
+                userpass, hostport = url.netloc.split('@')
+            except ValueError:
+                userpass, hostport = '', url.netloc
+
+            try:
+                username, password = userpass.split(':')
+            except ValueError:
+                pass
+
             path = list(filter(None, url.path.split('/')))
-            config['LOCATION'] = ':'.join((url.netloc, path[0]))
+            config['LOCATION'] = ':'.join((hostport, path[0]))
             config['KEY_PREFIX'] = '/'.join(path[1:])
+
+        redis_options = {}
+
         if url.scheme == 'hiredis':
-            config['OPTIONS'] = {
-                'PARSER_CLASS': 'redis.connection.HiredisParser'}
+            redis_options['PARSER_CLASS'] = 'redis.connection.HiredisParser'
+
+        try:
+            if password:
+                redis_options['PASSWORD'] = password
+        except NameError:  # No password defined
+            pass
+
+        if redis_options:
+            config['OPTIONS'] = redis_options
+
     else:
         netloc_list = url.netloc.split(',')
         if len(netloc_list) > 1:

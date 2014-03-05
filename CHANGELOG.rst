@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+v0.8.0
+------
+
+- Add support for password in redis urls (thanks to Mjumbe Wawatu Ukweli)
+
+
+v0.7.0
+------
+
+- Add support for UNIX sockets in redis urls (thanks to Jannis Leidel)
+
+
 v0.6.0
 ------
 
