@@ -29,16 +29,24 @@ Supported Caches
 ----------------
 Support currently exists for:
 
-* locmem (default): ``'locmem://[location][/location]'``
-* db: ``'db://cache_table[/prefix]'``
+* locmem (default): ``'locmem://[NAME]'``
+* db: ``'db://TABLE_NAME'``
 * dummy: ``'dummy://'``
-* file: ``'file:///path/to/file'``
-* memcached: ``'memcached://127.0.0.1:11211[/prefix]``
-* pymemcached: ``'pymemcached://127.0.0.1:11211[/prefix]'`` For use with the python-memcached library. Useful if you're using Ubuntu <= 10.04.
-* djangopylibmc: ``'djangopylibmc://127.0.0.1:11211[/prefix]'`` For use with SASL based setups such as Heroku.
-* redis: ``'redis://t@host:port/db[/prefix]'`` or ``'redis:///unix/path/to/socket/file.sock/db[/prefix]'`` For use with django-redis library.
-* hiredis ``'hiredis://host:port/db[/prefix]'`` or ``'hiredis:///unix/path/to/socket/file.sock/db[/prefix]'`` For use with django-redis library using
-  HiredisParser
+* file: ``'file:///PATH/TO/FILE'``
+* memcached: ``'memcached://HOST:PORT'`` [#memcache]_
+* pymemcached: ``'pymemcached://HOST:PORT'`` For use with the `python-memcached`_ library. Useful if you're using Ubuntu <= 10.04.
+* djangopylibmc: ``'djangopylibmc://HOST:PORT'`` For use with SASL based setups such as Heroku.
+* redis: ``'redis://[USER:PASSWORD@]HOST:PORT[:DB]'`` or ``'redis:///PATH/TO/SOCKET[:DB]'`` For use with `django-redis`_.
+* hiredis ``'hiredis://[USER:PASSWORD@]HOST:PORT[:DB]'`` or ``'hiredis:///PATH/TO/SOCKET[:DB]'`` For use with django-redis library using HiredisParser.
+
+All cache urls support optional cache arguments by using a query string, e.g.: ``'memcached://HOST:PORT?key_prefix=site1'``. See the Django `cache arguments documentation`_.
+
+.. [#memcache] To specify multiple instances, separate the the ``HOST:PORT``` pair
+               by commas, e.g: ``'memcached://HOST1:PORT1,HOST2:PORT2``
+
+.. _django-redis: https://github.com/niwibe/django-redis
+.. _python-memcached: https://github.com/linsomniac/python-memcached
+.. _cache arguments documentation: https://docs.djangoproject.com/en/dev/topics/cache/#cache-arguments
 
 Installation
 ------------

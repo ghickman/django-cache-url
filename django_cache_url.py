@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import re
 
 try:
     import urlparse
@@ -21,7 +22,7 @@ urlparse.uses_netloc.append('hiredis')
 
 DEFAULT_ENV = 'CACHE_URL'
 
-CACHE_TYPES = {
+BACKENDS = {
     'db': 'django.core.cache.backends.db.DatabaseCache',
     'dummy': 'django.core.cache.backends.dummy.DummyCache',
     'file': 'django.core.cache.backends.filebased.FileBasedCache',
@@ -32,6 +33,9 @@ CACHE_TYPES = {
     'redis': 'redis_cache.cache.RedisCache',
     'hiredis': 'redis_cache.cache.RedisCache',
 }
+
+redis_path_pattern = re.compile(r'[\w./-]+:?(?P<redis_db>\d)?')
+redis_url_pattern = re.compile(r'.:(?P<port>\d+):?(?P<redis_db>\d)?')
 
 
 def config(env=DEFAULT_ENV, default='locmem://'):
@@ -51,81 +55,49 @@ def parse(url):
     config = {}
 
     url = urlparse.urlparse(url)
+    # Handle python 2.6 broken url parsing
+    path, query = url.path, url.query
+    if '?' in path and query == '':
+        path, query = path.split('?', 1)
+
+    cache_args = dict([(key.upper(), ';'.join(val)) for key, val in
+                        urlparse.parse_qs(query).items()])
+
     # Update with environment configuration.
-    config['BACKEND'] = CACHE_TYPES[url.scheme]
-    if url.scheme == 'file':
-        config['LOCATION'] = url.path
-        return config
-    elif url.scheme in ('redis', 'hiredis'):
-        if url.netloc == 'unix':
-            location_index = None
-            bits = list(filter(None, url.path.split('/')))
-            # find the end of the socket path
-            for index, bit in enumerate(bits, 1):
-                if bit.endswith(('.sock', '.socket')):
-                    location_index = index
-                    break
+    config['BACKEND'] = BACKENDS[url.scheme]
 
-            if location_index is None:
-                # no socket file extension found, using the whole location
-                location = bits
+    redis_options = {}
+    if url.scheme == 'hiredis':
+        redis_options['PARSER_CLASS'] = 'redis.connection.HiredisParser'
+
+    # File based
+    if not url.netloc:
+        if url.scheme in ('memcached', 'pymemcached', 'djangopylibmc'):
+            config['LOCATION'] = 'unix:' + path
+        elif url.scheme in ('redis', 'hiredis'):
+            redis_db = redis_path_pattern.match(path).group('redis_db')
+            if redis_db:
+                config['LOCATION'] = 'unix:%s' % (path,)
             else:
-                # splitting socket path from database and prefix
-                location = bits[:location_index]
-                rest = bits[location_index:]
-                if len(rest) > 0:
-                    try:
-                        # check if first item of the rest is a database
-                        database = int(rest[0])
-                        prefix = rest[1:]
-                    except ValueError:
-                        # or assume the rest is the prefix
-                        database = 0
-                        prefix = rest
-                else:
-                    database = prefix = None
-
-            full_location = (url.netloc, '/' + '/'.join(location))
-            if database is not None:
-                full_location += (str(database),)
-            config['LOCATION'] = ':'.join(full_location)
-            config['KEY_PREFIX'] = '/'.join(prefix)
-
+                config['LOCATION'] = 'unix:%s:%s' % (path, '0')
         else:
-            try:
-                userpass, hostport = url.netloc.split('@')
-            except ValueError:
-                userpass, hostport = '', url.netloc
-
-            try:
-                username, password = userpass.split(':')
-            except ValueError:
-                pass
-
-            path = list(filter(None, url.path.split('/')))
-            config['LOCATION'] = ':'.join((hostport, path[0]))
-            config['KEY_PREFIX'] = '/'.join(path[1:])
-
-        redis_options = {}
-
-        if url.scheme == 'hiredis':
-            redis_options['PARSER_CLASS'] = 'redis.connection.HiredisParser'
-
-        try:
-            if password:
-                redis_options['PASSWORD'] = password
-        except NameError:  # No password defined
-            pass
-
-        if redis_options:
-            config['OPTIONS'] = redis_options
-
+            config['LOCATION'] = path
+    # URL based
     else:
-        netloc_list = url.netloc.split(',')
-        if len(netloc_list) > 1:
-            config['LOCATION'] = netloc_list
-        else:
-            config['LOCATION'] = url.netloc
-        config['KEY_PREFIX'] = url.path[1:]
+        # Handle multiple hosts
+        config['LOCATION'] = ';'.join(url.netloc.split(','))
+
+        if url.scheme in ('redis', 'hiredis'):
+            if url.password:
+                redis_options['PASSWORD'] = url.password
+            # url.port handling differs between python 2 and 3 so use regex
+            port = redis_url_pattern.search(url.netloc).group('port')
+            redis_db = redis_url_pattern.search(url.netloc).group('redis_db') or '0'
+            config['LOCATION'] = "%s:%s:%s" % (url.hostname, port, redis_db)
+
+    if redis_options:
+        config['OPTIONS'] = redis_options
+
+    config.update(cache_args)
 
     return config

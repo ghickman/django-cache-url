@@ -88,7 +88,7 @@ class TestLocMemCache(Base):
 class TestMemcachedCache(Base):
     def setUp(self):
         super(TestMemcachedCache, self).setUp()
-        environ['CACHE_URL'] = 'memcached://127.0.0.1:11211/prefix'
+        environ['CACHE_URL'] = 'memcached://127.0.0.1:11211?key_prefix=site1'
 
     def test_memcached_url_returns_pylibmc_cache(self):
         location = 'django.core.cache.backends.memcached.PyLibMCCache'
@@ -101,18 +101,18 @@ class TestMemcachedCache(Base):
 
     def test_memcached_url_returns_prefix_from_url(self):
         config = django_cache_url.config()
-        assert_equals(config['KEY_PREFIX'], 'prefix')
+        assert_equals(config['KEY_PREFIX'], 'site1')
 
     def test_memcached_url_multiple_locations(self):
-        environ['CACHE_URL'] = 'memcached://127.0.0.1:11211,192.168.0.100:11211/prefix'
+        environ['CACHE_URL'] = 'memcached://127.0.0.1:11211,192.168.0.100:11211?key_prefix=site1'
         config = django_cache_url.config()
-        assert_equals(config['LOCATION'], ['127.0.0.1:11211', '192.168.0.100:11211'])
+        assert_equals(config['LOCATION'], '127.0.0.1:11211;192.168.0.100:11211')
 
 
 class TestRedisCache(Base):
     def setUp(self):
         super(TestRedisCache, self).setUp()
-        environ['CACHE_URL'] = 'redis://127.0.0.1:6379/0/prefix'
+        environ['CACHE_URL'] = 'redis://127.0.0.1:6379:0?key_prefix=site1'
 
     def test_redis_url_returns_redis_cache(self):
         location = 'redis_cache.cache.RedisCache'
@@ -125,13 +125,13 @@ class TestRedisCache(Base):
 
     def test_redis_url_returns_prefix_from_url(self):
         config = django_cache_url.config()
-        assert_equals(config['KEY_PREFIX'], 'prefix')
+        assert_equals(config['KEY_PREFIX'], 'site1')
 
 
 class TestHiredisCache(Base):
     def setUp(self):
         super(TestHiredisCache, self).setUp()
-        environ['CACHE_URL'] = 'hiredis://127.0.0.1:6379/0/prefix'
+        environ['CACHE_URL'] = 'hiredis://127.0.0.1:6379:0?key_prefix=site1'
 
     def test_hiredis_url_returns_redis_cache(self):
         location = 'redis_cache.cache.RedisCache'
@@ -144,7 +144,7 @@ class TestHiredisCache(Base):
 
     def test_hiredis_url_returns_prefix_from_url(self):
         config = django_cache_url.config()
-        assert_equals(config['KEY_PREFIX'], 'prefix')
+        assert_equals(config['KEY_PREFIX'], 'site1')
 
     def test_hiredis_url_sets_hiredis_parser(self):
         config = django_cache_url.config()
@@ -155,7 +155,7 @@ class TestHiredisCache(Base):
 class TestRedisCacheWithPassword(Base):
     def setUp(self):
         super(TestRedisCacheWithPassword, self).setUp()
-        environ['CACHE_URL'] = 'redis://:redispass@127.0.0.1:6379/0/prefix'
+        environ['CACHE_URL'] = 'redis://:redispass@127.0.0.1:6379:0?key_prefix=site1'
 
     def test_redis_url_returns_redis_cache(self):
         location = 'redis_cache.cache.RedisCache'
@@ -168,7 +168,7 @@ class TestRedisCacheWithPassword(Base):
 
     def test_redis_url_returns_prefix_from_url(self):
         config = django_cache_url.config()
-        assert_equals(config['KEY_PREFIX'], 'prefix')
+        assert_equals(config['KEY_PREFIX'], 'site1')
 
     def test_redis_url_returns_password(self):
         config = django_cache_url.config()
@@ -180,7 +180,7 @@ class TestRedisCacheWithPassword(Base):
 class TestRedisBothSocketCache(Base):
     def setUp(self):
         super(TestRedisBothSocketCache, self).setUp()
-        environ['CACHE_URL'] = 'redis://unix/path/to/socket/file.sock/1/prefix'
+        environ['CACHE_URL'] = 'redis:///path/to/socket:1?key_prefix=site1'
 
     def test_socket_url_returns_redis_cache(self):
         location = 'redis_cache.cache.RedisCache'
@@ -189,41 +189,41 @@ class TestRedisBothSocketCache(Base):
 
     def test_socket_url_returns_location_and_port_from_url(self):
         config = django_cache_url.config()
-        assert_equals(config['LOCATION'], 'unix:/path/to/socket/file.sock:1')
+        assert_equals(config['LOCATION'], 'unix:/path/to/socket:1')
 
     def test_socket_url_returns_prefix_from_url(self):
         config = django_cache_url.config()
-        assert_equals(config['KEY_PREFIX'], 'prefix')
+        assert_equals(config['KEY_PREFIX'], 'site1')
 
 
 class TestRedisDatabaseSocketCache(TestRedisBothSocketCache):
     def setUp(self):
         super(TestRedisDatabaseSocketCache, self).setUp()
-        environ['CACHE_URL'] = 'redis://unix/path/to/socket/file.sock/1'
+        environ['CACHE_URL'] = 'redis:///path/to/socket:1'
 
     def test_socket_url_returns_prefix_from_url(self):
         config = django_cache_url.config()
-        assert_equals(config['KEY_PREFIX'], '')
+        assert_equals(config.get('KEY_PREFIX'), None)
 
 
 class TestRedisPrefixSocketCache(TestRedisBothSocketCache):
     def setUp(self):
         super(TestRedisPrefixSocketCache, self).setUp()
-        environ['CACHE_URL'] = 'redis://unix/path/to/socket/file.sock/prefix'
+        environ['CACHE_URL'] = 'redis:///path/to/socket?key_prefix=site1'
 
     def test_socket_url_returns_location_and_port_from_url(self):
         config = django_cache_url.config()
-        assert_equals(config['LOCATION'], 'unix:/path/to/socket/file.sock:0')
+        assert_equals(config['LOCATION'], 'unix:/path/to/socket:0')
 
     def test_socket_url_returns_prefix_from_url(self):
         config = django_cache_url.config()
-        assert_equals(config['KEY_PREFIX'], 'prefix')
+        assert_equals(config['KEY_PREFIX'], 'site1')
 
 
 class TestHiredisDatabaseSocketCache(TestRedisDatabaseSocketCache):
     def setUp(self):
         super(TestHiredisDatabaseSocketCache, self).setUp()
-        environ['CACHE_URL'] = 'hiredis://unix/path/to/socket/file.sock/1'
+        environ['CACHE_URL'] = 'hiredis:///path/to/socket:1'
 
     def test_hiredis_url_sets_hiredis_parser(self):
         config = django_cache_url.config()
@@ -234,7 +234,7 @@ class TestHiredisDatabaseSocketCache(TestRedisDatabaseSocketCache):
 class TestHiredisPrefixSocketCache(TestRedisPrefixSocketCache):
     def setUp(self):
         super(TestHiredisPrefixSocketCache, self).setUp()
-        environ['CACHE_URL'] = 'hiredis://unix/path/to/socket/file.sock/prefix'
+        environ['CACHE_URL'] = 'hiredis:///path/to/socket?key_prefix=site1'
 
     def test_hiredis_url_sets_hiredis_parser(self):
         config = django_cache_url.config()
