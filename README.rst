@@ -36,8 +36,8 @@ Support currently exists for:
 * memcached: ``'memcached://HOST:PORT'`` [#memcache]_
 * pymemcached: ``'pymemcached://HOST:PORT'`` For use with the `python-memcached`_ library. Useful if you're using Ubuntu <= 10.04.
 * djangopylibmc: ``'djangopylibmc://HOST:PORT'`` For use with SASL based setups such as Heroku.
-* redis: ``'redis://[USER:PASSWORD@]HOST:PORT[:DB]'`` or ``'redis:///PATH/TO/SOCKET[:DB]'`` For use with `django-redis`_.
-* hiredis ``'hiredis://[USER:PASSWORD@]HOST:PORT[:DB]'`` or ``'hiredis:///PATH/TO/SOCKET[:DB]'`` For use with django-redis library using HiredisParser.
+* redis: ``'redis://[USER:PASSWORD@]HOST:PORT[/DB]'`` or ``'redis:///PATH/TO/SOCKET[/DB]'`` For use with `django-redis`_.
+* hiredis ``'hiredis://[USER:PASSWORD@]HOST:PORT[/DB]'`` or ``'hiredis:///PATH/TO/SOCKET[/DB]'`` For use with django-redis library using HiredisParser.
 
 All cache urls support optional cache arguments by using a query string, e.g.: ``'memcached://HOST:PORT?key_prefix=site1'``. See the Django `cache arguments documentation`_.
 

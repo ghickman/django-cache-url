@@ -112,7 +112,7 @@ class TestMemcachedCache(Base):
 class TestRedisCache(Base):
     def setUp(self):
         super(TestRedisCache, self).setUp()
-        environ['CACHE_URL'] = 'redis://127.0.0.1:6379:0?key_prefix=site1'
+        environ['CACHE_URL'] = 'redis://127.0.0.1:6379/0?key_prefix=site1'
 
     def test_redis_url_returns_redis_cache(self):
         location = 'redis_cache.cache.RedisCache'
@@ -131,7 +131,7 @@ class TestRedisCache(Base):
 class TestHiredisCache(Base):
     def setUp(self):
         super(TestHiredisCache, self).setUp()
-        environ['CACHE_URL'] = 'hiredis://127.0.0.1:6379:0?key_prefix=site1'
+        environ['CACHE_URL'] = 'hiredis://127.0.0.1:6379/0?key_prefix=site1'
 
     def test_hiredis_url_returns_redis_cache(self):
         location = 'redis_cache.cache.RedisCache'
@@ -155,7 +155,7 @@ class TestHiredisCache(Base):
 class TestRedisCacheWithPassword(Base):
     def setUp(self):
         super(TestRedisCacheWithPassword, self).setUp()
-        environ['CACHE_URL'] = 'redis://:redispass@127.0.0.1:6379:0?key_prefix=site1'
+        environ['CACHE_URL'] = 'redis://:redispass@127.0.0.1:6379/0?key_prefix=site1'
 
     def test_redis_url_returns_redis_cache(self):
         location = 'redis_cache.cache.RedisCache'
@@ -180,7 +180,7 @@ class TestRedisCacheWithPassword(Base):
 class TestRedisBothSocketCache(Base):
     def setUp(self):
         super(TestRedisBothSocketCache, self).setUp()
-        environ['CACHE_URL'] = 'redis:///path/to/socket:1?key_prefix=site1'
+        environ['CACHE_URL'] = 'redis:///path/to/socket/1?key_prefix=site1'
 
     def test_socket_url_returns_redis_cache(self):
         location = 'redis_cache.cache.RedisCache'
@@ -199,7 +199,7 @@ class TestRedisBothSocketCache(Base):
 class TestRedisDatabaseSocketCache(TestRedisBothSocketCache):
     def setUp(self):
         super(TestRedisDatabaseSocketCache, self).setUp()
-        environ['CACHE_URL'] = 'redis:///path/to/socket:1'
+        environ['CACHE_URL'] = 'redis:///path/to/socket/1'
 
     def test_socket_url_returns_prefix_from_url(self):
         config = django_cache_url.config()
@@ -223,7 +223,7 @@ class TestRedisPrefixSocketCache(TestRedisBothSocketCache):
 class TestHiredisDatabaseSocketCache(TestRedisDatabaseSocketCache):
     def setUp(self):
         super(TestHiredisDatabaseSocketCache, self).setUp()
-        environ['CACHE_URL'] = 'hiredis:///path/to/socket:1'
+        environ['CACHE_URL'] = 'hiredis:///path/to/socket/1'
 
     def test_hiredis_url_sets_hiredis_parser(self):
         config = django_cache_url.config()

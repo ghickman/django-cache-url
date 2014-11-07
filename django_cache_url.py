@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import os
 import re
 
@@ -33,9 +32,6 @@ BACKENDS = {
     'redis': 'redis_cache.cache.RedisCache',
     'hiredis': 'redis_cache.cache.RedisCache',
 }
-
-redis_path_pattern = re.compile(r'[\w./-]+:?(?P<redis_db>\d)?')
-redis_url_pattern = re.compile(r'.:(?P<port>\d+):?(?P<redis_db>\d)?')
 
 
 def config(env=DEFAULT_ENV, default='locmem://'):
@@ -74,12 +70,15 @@ def parse(url):
     if not url.netloc:
         if url.scheme in ('memcached', 'pymemcached', 'djangopylibmc'):
             config['LOCATION'] = 'unix:' + path
+
         elif url.scheme in ('redis', 'hiredis'):
-            redis_db = redis_path_pattern.match(path).group('redis_db')
-            if redis_db:
-                config['LOCATION'] = 'unix:%s' % (path,)
+            match = re.match(r'.+?(?P<db>\d+)', path)
+            if match:
+                db = match.group('db')
+                path = path[:path.rfind('/')]
             else:
-                config['LOCATION'] = 'unix:%s:%s' % (path, '0')
+                db = '0'
+            config['LOCATION'] = 'unix:%s:%s' % (path, db)
         else:
             config['LOCATION'] = path
     # URL based
@@ -90,10 +89,9 @@ def parse(url):
         if url.scheme in ('redis', 'hiredis'):
             if url.password:
                 redis_options['PASSWORD'] = url.password
-            # url.port handling differs between python 2 and 3 so use regex
-            port = redis_url_pattern.search(url.netloc).group('port')
-            redis_db = redis_url_pattern.search(url.netloc).group('redis_db') or '0'
-            config['LOCATION'] = "%s:%s:%s" % (url.hostname, port, redis_db)
+            # Specifying the database is optional, use db 0 if not specified.
+            db = path[1:] or '0'
+            config['LOCATION'] = "%s:%s:%s" % (url.hostname, url.port, db)
 
     if redis_options:
         config['OPTIONS'] = redis_options
