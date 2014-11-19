@@ -16,6 +16,7 @@ Usage
 -----
 Configure your cache in ``settings.py`` from ``CACHE_URL``::
 
+    import django_cache_url
     CACHES = {'default': django_cache_url.config()}
 
 Defaults to local memory cache if ``CACHE_URL`` isn't set.
