@@ -60,6 +60,10 @@ def parse(url):
                        urlparse.parse_qs(query).items()])
 
     # Update with environment configuration.
+    backend = BACKENDS.get(url.scheme)
+    if not backend:
+        raise Exception('Unknown backend: "{0}"'.format(url.scheme))
+
     config['BACKEND'] = BACKENDS[url.scheme]
 
     redis_options = {}
