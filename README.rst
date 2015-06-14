@@ -60,9 +60,9 @@ I haz them!
 
 .. image:: https://secure.travis-ci.org/ghickman/django-cache-url.png?branch=master
 
-To run the tests install nose::
+To run the tests install tox::
 
-    pip install nose
+    pip install tox
 
 Then run them with::
 
