@@ -57,7 +57,7 @@ def parse(url):
         path, query = path.split('?', 1)
 
     cache_args = dict([(key.upper(), ';'.join(val)) for key, val in
-                        urlparse.parse_qs(query).items()])
+                       urlparse.parse_qs(query).items()])
 
     # Update with environment configuration.
     config['BACKEND'] = BACKENDS[url.scheme]

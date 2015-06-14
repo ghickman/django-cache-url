@@ -6,7 +6,8 @@ try:
     from nose.tools import assert_in
 except ImportError:
     # Pre-Python 2.7
-    def assert_in(val, elems): assert val in elems, "%r not found in %r" % (val, elems)
+    def assert_in(val, elems):
+        assert val in elems, "%r not found in %r" % (val, elems)
 
 import django_cache_url
 
