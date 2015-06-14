@@ -13,6 +13,5 @@ def test_config_defaults_to_locmem():
 
 
 def test_locmem_url_returns_locmem_cache():
-    os.environ['CACHE_URl'] = 'locmem://'
-    config = django_cache_url.config('')
+    config = django_cache_url.parse('locmem://')
     assert config['BACKEND'] == LOCATION
