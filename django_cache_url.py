@@ -3,9 +3,9 @@ import os
 import re
 
 try:
-    import urlparse
-except ImportError:
     import urllib.parse as urlparse
+except ImportError:  # python 2
+    import urlparse
 
 
 # Register cache schemes in URLs.
