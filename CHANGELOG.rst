@@ -6,7 +6,8 @@ v1.0.0
 
 - **Backwards Incompatible** Improve Redis URL parsing, making PREFIX parsing much easier and automatically converting query args into Django Cache settings (thanks to Russell Davies)
 - **Backwards Incompatible** Switch to ``django-redis``'s new import name
-- **Backwards Incompatible** Add LOCATION support for use with django-redis (Sławomir Ehlert)
+- Switch to Tox for running tests with different pythons
+- Switch to pytest
 
 
 v0.8.0
