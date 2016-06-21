@@ -38,7 +38,7 @@ Support currently exists for:
 * djangopylibmc: ``'djangopylibmc://HOST:PORT'`` For use with SASL based setups such as Heroku.
 * redis: ``'redis://[USER:PASSWORD@]HOST:PORT[/DB]'`` or ``'redis:///PATH/TO/SOCKET[/DB]'`` For use with `django-redis`_.
 * hiredis: ``'hiredis://[USER:PASSWORD@]HOST:PORT[/DB]'`` or ``'hiredis:///PATH/TO/SOCKET[/DB]'`` For use with django-redis library using HiredisParser.
-* uwsgicache: ``'uwgsicache://[cachename]'`` For use with `django-uwsgi-cache`_. Fallbacks to ``locmem`` if not running on uWSGI server.
+* uwsgicache: ``'uwgsicache://[CACHENAME]'`` For use with `django-uwsgi-cache`_. Fallbacks to ``locmem`` if not running on uWSGI server.
 
 All cache urls support optional cache arguments by using a query string, e.g.: ``'memcached://HOST:PORT?key_prefix=site1'``. See the Django `cache arguments documentation`_.
 
