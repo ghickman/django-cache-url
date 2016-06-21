@@ -13,6 +13,7 @@ urlparse.uses_netloc.append('db')
 urlparse.uses_netloc.append('dummy')
 urlparse.uses_netloc.append('file')
 urlparse.uses_netloc.append('locmem')
+urlparse.uses_netloc.append('uwsgicache')
 urlparse.uses_netloc.append('memcached')
 urlparse.uses_netloc.append('djangopylibmc')
 urlparse.uses_netloc.append('pymemcached')
@@ -26,6 +27,7 @@ BACKENDS = {
     'dummy': 'django.core.cache.backends.dummy.DummyCache',
     'file': 'django.core.cache.backends.filebased.FileBasedCache',
     'locmem': 'django.core.cache.backends.locmem.LocMemCache',
+    'uwsgicache': 'uwsgicache.UWSGICache',
     'memcached': 'django.core.cache.backends.memcached.PyLibMCCache',
     'djangopylibmc': 'django_pylibmc.memcached.PyLibMCCache',
     'pymemcached': 'django.core.cache.backends.memcached.MemcachedCache',
@@ -99,6 +101,9 @@ def parse(url):
 
     if redis_options:
         config['OPTIONS'] = redis_options
+
+    if url.scheme == 'uwsgicache':
+        config['LOCATION'] = config.get('LOCATION', 'default') or 'default'
 
     config.update(cache_args)
 
