@@ -1,6 +1,4 @@
-import os
-
-import pytest
+from __future__ import unicode_literals
 
 import django_cache_url
 
