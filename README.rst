@@ -37,7 +37,8 @@ Support currently exists for:
 * pymemcached: ``'pymemcached://HOST:PORT'`` For use with the `python-memcached`_ library. Useful if you're using Ubuntu <= 10.04.
 * djangopylibmc: ``'djangopylibmc://HOST:PORT'`` For use with SASL based setups such as Heroku.
 * redis: ``'redis://[USER:PASSWORD@]HOST:PORT[/DB]'`` or ``'redis:///PATH/TO/SOCKET[/DB]'`` For use with `django-redis`_.
-* hiredis ``'hiredis://[USER:PASSWORD@]HOST:PORT[/DB]'`` or ``'hiredis:///PATH/TO/SOCKET[/DB]'`` For use with django-redis library using HiredisParser.
+* hiredis: ``'hiredis://[USER:PASSWORD@]HOST:PORT[/DB]'`` or ``'hiredis:///PATH/TO/SOCKET[/DB]'`` For use with django-redis library using HiredisParser.
+* uwsgicache: ``'uwsgicache://[CACHENAME]'`` For use with `django-uwsgi-cache`_. Fallbacks to ``locmem`` if not running on uWSGI server.
 
 All cache urls support optional cache arguments by using a query string, e.g.: ``'memcached://HOST:PORT?key_prefix=site1'``. See the Django `cache arguments documentation`_.
 
@@ -47,6 +48,7 @@ All cache urls support optional cache arguments by using a query string, e.g.: `
 .. _django-redis: https://github.com/niwibe/django-redis
 .. _python-memcached: https://github.com/linsomniac/python-memcached
 .. _cache arguments documentation: https://docs.djangoproject.com/en/dev/topics/cache/#cache-arguments
+.. _django-uwsgi-cache: https://github.com/ionelmc/django-uwsgi-cache
 
 Installation
 ------------
