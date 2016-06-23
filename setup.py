@@ -22,7 +22,7 @@ from setuptools import setup
 
 setup(
     name='django-cache-url',
-    version='1.0.0',
+    version='1.1.0',
     url='http://github.com/ghickman/django-cache-url',
     license='MIT',
     author='George Hickman',
@@ -40,7 +40,6 @@ setup(
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
     ],
 )

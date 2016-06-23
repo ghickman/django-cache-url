@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+v1.1.0
+------
+
+- Add support for uwsgi caching (thanks to Alan Justino da Silva)
+
+
 v1.0.0
 ------
 
