@@ -2,6 +2,7 @@ build
 dist
 *.egg-info
 .tox
+.python-version
 
 # coverage
 .coverage
