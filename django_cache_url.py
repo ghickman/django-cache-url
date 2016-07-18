@@ -100,10 +100,20 @@ def parse(url):
             config['LOCATION'] = "%s:%s:%s" % (url.hostname, url.port, db)
 
     if redis_options:
-        config['OPTIONS'] = redis_options
+        config.setdefault('OPTIONS', {}).update(redis_options)
 
     if url.scheme == 'uwsgicache':
         config['LOCATION'] = config.get('LOCATION', 'default') or 'default'
+
+    # Pop special options from cache_args
+    # https://docs.djangoproject.com/en/1.10/topics/cache/#cache-arguments
+    options = {
+        key: int(cache_args.pop(key))
+        for key in ['MAX_ENTRIES', 'CULL_FREQUENCY']
+        if key in cache_args
+    }
+    if options:
+        config.setdefault('OPTIONS', {}).update(options)
 
     config.update(cache_args)
 

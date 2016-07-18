@@ -37,12 +37,21 @@ def test_locmem_url_returns_locmem_cache():
     assert config['BACKEND'] == 'django.core.cache.backends.locmem.LocMemCache'
 
 
-def test_query_string_params_are_converted_to_cache_options():
+def test_query_string_params_are_converted_to_cache_arguments():
     url = 'redis:///path/to/socket?key_prefix=foo&bar=herp'
     config = django_cache_url.parse(url)
 
     assert config['KEY_PREFIX'] == 'foo'
     assert config['BAR'] == 'herp'
+
+
+def test_query_string_params_are_converted_to_cache_options():
+    url = 'db://my_cache_table?max_entries=1000&cull_frequency=2'
+    config = django_cache_url.parse(url)
+
+    assert 'OPTIONS' in config
+    assert config['OPTIONS']['MAX_ENTRIES'] == 1000
+    assert config['OPTIONS']['CULL_FREQUENCY'] == 2
 
 
 def test_unknown_cache_backend():
