@@ -107,11 +107,11 @@ def parse(url):
 
     # Pop special options from cache_args
     # https://docs.djangoproject.com/en/1.10/topics/cache/#cache-arguments
-    options = {
-        key: int(cache_args.pop(key))
-        for key in ['MAX_ENTRIES', 'CULL_FREQUENCY']
-        if key in cache_args
-    }
+    options = {}
+    for key in ['MAX_ENTRIES', 'CULL_FREQUENCY']:
+        val = cache_args.pop(key, None)
+        if val is not None:
+            options[key] = int(val)
     if options:
         config.setdefault('OPTIONS', {}).update(options)
 
