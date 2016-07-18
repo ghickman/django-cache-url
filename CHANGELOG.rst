@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+v1.2.0
+------
+
+- Run tests on Python 3.5 (thanks to Anton Egorov)
+- Add support for MAX_ENTRIES and CULL_FREQUENCY options (thanks to Anton Egorov)
+
+
 v1.1.0
 ------
 
