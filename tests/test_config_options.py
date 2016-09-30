@@ -23,4 +23,4 @@ def test_setting_env_var():
     config = django_cache_url.config()
 
     assert config['BACKEND'] == 'django_redis.cache.RedisCache'
-    assert config['LOCATION'] == '127.0.0.1:6379:0'
+    assert config['LOCATION'] == 'redis://127.0.0.1:6379:0'

@@ -10,7 +10,7 @@ def test_hiredis():
     config = django_cache_url.parse(url)
 
     assert config['BACKEND'] == 'django_redis.cache.RedisCache'
-    assert config['LOCATION'] == '127.0.0.1:6379:0'
+    assert config['LOCATION'] == 'redis://127.0.0.1:6379:0'
     assert config['OPTIONS']['PARSER_CLASS'] == 'redis.connection.HiredisParser'
 
 
@@ -32,7 +32,7 @@ def test_redis():
     config = django_cache_url.parse(url)
 
     assert config['BACKEND'] == 'django_redis.cache.RedisCache'
-    assert config['LOCATION'] == '127.0.0.1:6379:0'
+    assert config['LOCATION'] == 'redis://127.0.0.1:6379:0'
 
 
 def test_redis_socket():
@@ -49,5 +49,5 @@ def test_redis_with_password():
     config = django_cache_url.parse(url)
 
     assert config['BACKEND'] == 'django_redis.cache.RedisCache'
-    assert config['LOCATION'] == '127.0.0.1:6379:0'
+    assert config['LOCATION'] == 'redis://127.0.0.1:6379:0'
     assert config['OPTIONS']['PASSWORD'] == 'redispass'
