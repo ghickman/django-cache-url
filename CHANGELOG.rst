@@ -1,10 +1,17 @@
 CHANGELOG
 =========
 
+v1.3.1
+------
+
+- Fix django-redis support (thanks to Manatsawin Hanmongkolchai)
+
+
 v1.3.0
 ------
 
 - Support for django-redis >= 4.50 (thanks to Egor Yurtaev)
+
 
 v1.2.0
 ------
