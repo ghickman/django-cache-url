@@ -20,3 +20,11 @@ def test_memcached_socket_url():
     url = 'memcached:///path/to/socket/'
     config = django_cache_url.parse(url)
     assert config['LOCATION'] == 'unix:/path/to/socket/'
+
+
+def test_elasticache_url():
+    url = 'elasticache://cache-a.a.cfg.use1.cache.amazonaws.com:11211'
+    config = django_cache_url.parse(url)
+
+    assert config['LOCATION'] == 'cache-a.a.cfg.use1.cache.amazonaws.com:11211'
+    assert config['BACKEND'] == 'django_elasticache.memcached.ElastiCache'
