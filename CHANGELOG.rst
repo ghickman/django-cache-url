@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+v1.4.0
+------
+
+- Add django-elasticache support (thanks to Alex Couper)
+
+
 v1.3.1
 ------
 
