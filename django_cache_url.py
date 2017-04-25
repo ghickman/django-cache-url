@@ -15,6 +15,7 @@ urlparse.uses_netloc.append('file')
 urlparse.uses_netloc.append('locmem')
 urlparse.uses_netloc.append('uwsgicache')
 urlparse.uses_netloc.append('memcached')
+urlparse.uses_netloc.append('elasticache')
 urlparse.uses_netloc.append('djangopylibmc')
 urlparse.uses_netloc.append('pymemcached')
 urlparse.uses_netloc.append('redis')
@@ -25,6 +26,7 @@ DEFAULT_ENV = 'CACHE_URL'
 BACKENDS = {
     'db': 'django.core.cache.backends.db.DatabaseCache',
     'dummy': 'django.core.cache.backends.dummy.DummyCache',
+    'elasticache': 'django_elasticache.memcached.ElastiCache',
     'file': 'django.core.cache.backends.filebased.FileBasedCache',
     'locmem': 'django.core.cache.backends.locmem.LocMemCache',
     'uwsgicache': 'uwsgicache.UWSGICache',
