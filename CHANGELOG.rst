@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+v2.0.0
+------
+
+- **Backwards Incompatible** Remove Python 2.6 support
+- Fix urls without a port getting their port set to "None" instead (thanks to Linus Lewandowski)
+
+
 v1.4.0
 ------
 
