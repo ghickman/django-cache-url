@@ -99,7 +99,8 @@ def parse(url):
                 redis_options['PASSWORD'] = url.password
             # Specifying the database is optional, use db 0 if not specified.
             db = path[1:] or '0'
-            config['LOCATION'] = "redis://%s:%s/%s" % (url.hostname, url.port, db)
+            port = url.port if url.port else 6379
+            config['LOCATION'] = "redis://%s:%s/%s" % (url.hostname, port, db)
 
     if redis_options:
         config.setdefault('OPTIONS', {}).update(redis_options)
