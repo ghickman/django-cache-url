@@ -22,7 +22,7 @@ from setuptools import setup
 
 setup(
     name='django-cache-url',
-    version='2.0.0',
+    version='3.0.0',
     url='http://github.com/ghickman/django-cache-url',
     license='MIT',
     author='George Hickman',
@@ -31,7 +31,7 @@ setup(
     long_description=__doc__,
     py_modules=('django_cache_url',),
     classifiers=[
-        'Development Status :: 6 - Mature',
+        'Development Status :: 7 - Inactive',
         'Framework :: Django',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',

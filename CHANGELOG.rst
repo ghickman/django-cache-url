@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+v3.0.0
+------
+
+- Deprecate project in favour of `Django Environ <https://pypi.org/project/django-environ/>`_.
+
+
 v2.0.0
 ------
 
