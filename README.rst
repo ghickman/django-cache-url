@@ -2,4 +2,4 @@
 Deprecated
 ==========
 
-Django Cache URL has been deprecated in favour of `Django Environ <https://pypi.org/project/django-environ/>`_.
+This project has found a new home at `<https://github.com/epicserve/django-cache-url>`_.
